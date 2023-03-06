@@ -47,7 +47,7 @@ angle_rad = angle_rad[:-1]
 ax[0,1].plot(angle_rad,u_cemv)
 ax[0,1].plot(angle_rad,v_cemv)
 ax[0,1].plot(angle_rad,w_cemv)
-ax[0,1].set_ylabel("Counter-EMF Constant(raw)[V/rad]")
+ax[0,1].set_ylabel("Counter-EMF Constant(each phase)[V/rad]")
 ax[0,1].set_xlabel("Mecha Angle[rad]")
 
 #UVW相から電気角を計算（特に何かに使うわけではない）
@@ -67,10 +67,10 @@ ax[1,1].plot(angle_rad, fit_func(angle_rad,*popt))
 ax[1,1].plot(angle_rad[:len(angle_rad)],u_cemv)
 ax[1,1].set_xlabel("Mecha Angle[rad]")
 ax[1,1].legend(["U","fitting"])
-#ドライブ信号を生成　U相の電気角から90度オフセット 角相間は120度
-u_drive = fit_func(angle_rad,1,popt[1],popt[2],0)
-v_drive = fit_func(angle_rad,1,popt[1],popt[2]+2*math.pi/3,0)
-w_drive = fit_func(angle_rad,1,popt[1],popt[2]+2*math.pi/3*2,0)
+#ドライブ電流波形を生成　U相の電気角から90度オフセット 各相間は120度
+u_drive = fit_func(angle_rad,math.sqrt(2/3),popt[1],popt[2],0)
+v_drive = fit_func(angle_rad,math.sqrt(2/3),popt[1],popt[2]+2*math.pi/3,0)
+w_drive = fit_func(angle_rad,math.sqrt(2/3),popt[1],popt[2]+2*math.pi/3*2,0)
 u_torque = u_drive * u_cemv
 v_torque = v_drive * v_cemv
 w_torque = w_drive * w_cemv
